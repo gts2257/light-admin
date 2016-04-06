@@ -2,18 +2,16 @@ package org.lightadmin.field;
 
 import org.lightadmin.SeleniumContext;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.Locatable;
-import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
 public class MultiSelect extends BaseField implements BaseSelect {
 
 	private final WebElement theField;
-
-	@FindBy(className = "chzn-drop")
-	private WebElement valueList;
+	private WebElement optionList;
 
 	public MultiSelect( WebElement webElement, SeleniumContext seleniumContext ) {
 		super( seleniumContext );
@@ -22,9 +20,14 @@ public class MultiSelect extends BaseField implements BaseSelect {
 
 	@Override
 	public void select( String... optionNames ) {
-		for ( String optionName : optionNames ) {
-			addSelection( optionName );
-			theField.click();
+		for (int i = 0, optionNamesLength = optionNames.length; i < optionNamesLength; i++) {
+			String optionName = optionNames[i];
+			addSelection(optionName);
+
+			if (i < optionNamesLength - 1) {
+				// do not re-focus for last option
+				theField.click();
+			}
 		}
 	}
 
@@ -39,7 +42,12 @@ public class MultiSelect extends BaseField implements BaseSelect {
 
 	@Override
 	public void searchAndSelect( String searchString, String labelToSelect ) {
-		theField.sendKeys( searchString );
+
+		if (!hasSelectedOptions()) {
+			theField.click();
+		}
+
+		theField.findElement(By.tagName("input")).sendKeys(searchString);
 		select( labelToSelect );
 	}
 
@@ -53,12 +61,23 @@ public class MultiSelect extends BaseField implements BaseSelect {
 		select( optionsToAdd );
 	}
 
+	private WebElement findOptionByText(WebElement valueList, String text) {
+		for (WebElement listItem : valueList.findElements(By.xpath(".//li"))) {
+			if (listItem.getText().contains(text)) {
+				// ok, we found it
+				return listItem;
+			}
+		}
+		return null;
+	}
+
 	private void addSelection( String option ) {
-		theField.click();
+		optionList = theField.findElement(By.className("chzn-drop"));
 
-		webDriver().waitForElementVisible( valueList );
+		expandOptionList();
 
-		final WebElement optionToSelect = valueList.findElement( By.xpath( "//li[contains(text(), '" + option + "')]" ) );
+		final WebElement optionToSelect = findOptionByText(optionList, option);
+		assert optionToSelect != null;
 
 		( ( Locatable ) optionToSelect ).getCoordinates().inViewPort();
 		optionToSelect.click();
@@ -66,7 +85,23 @@ public class MultiSelect extends BaseField implements BaseSelect {
 		webDriver().waitForElementVisible( getSelectedOption( option ) );
 	}
 
+	private void expandOptionList() {
+		if (!optionList.isDisplayed()) {
+			theField.click();
+			webDriver().waitForElementVisible(optionList, 10);
+		}
+	}
+
 	private WebElement getSelectedOption( String value ) {
 		return theField.findElement( By.xpath( "//li[span[contains(text(),'" + value + "')]]" ) );
+	}
+
+	private boolean hasSelectedOptions() {
+		try {
+			theField.findElement(By.className("search-choice"));
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+		return true;
 	}
 }

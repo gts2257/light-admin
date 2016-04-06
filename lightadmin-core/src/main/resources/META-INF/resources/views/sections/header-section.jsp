@@ -4,11 +4,12 @@
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ taglib prefix="light" uri="http://www.lightadmin.org/tags" %>
 
-<tiles:useAttribute name="domainTypeAdministrationConfiguration" ignore="true"/>
+<tiles:importAttribute name="domainTypeAdministrationConfiguration" ignore="true"/>
 
+<spring:message code="to.dashboard" var="to_dashboard"/>
 <div id="header" class="wrapper">
 	<div class="logo">
-		<a href="<light:url value='/'/>" title="To Dashboard">
+		<a href="<light:url value='/'/>" title="${to_dashboard}">
 			<img src="<light:url value='/dynamic/logo'/>"/>
 		</a>
 	</div>

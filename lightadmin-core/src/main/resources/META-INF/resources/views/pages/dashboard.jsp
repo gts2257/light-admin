@@ -4,21 +4,22 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ taglib prefix="light" uri="http://www.lightadmin.org/tags" %>
+<%@ taglib prefix="bean" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<tiles:useAttribute name="dashboardDomainTypes"/>
+<tiles:importAttribute name="dashboardDomainTypes"/>
 
 <div class="title">
 	<h5><spring:message code="application.menu.dashboard"/></h5>
 </div>
 
 <div class="widget">
-	<div class="head"><h5 class="iChart8">Domain type statistics</h5></div>
+	<div class="head"><h5 class="iChart8"><bean:message key="domain.type.statistics"/></h5></div>
 	<c:if test="${not empty dashboardDomainTypes}">
 		<table id="dashboard-statistics" cellpadding="0" cellspacing="0" width="100%" class="tableStatic">
 			<thead>
 			<tr>
-				<td>Domain Type</td>
-				<td width="21%">Amount</td>
+				<td><bean:message key="domain.type"/></td>
+				<td width="21%"><bean:message key="amount"/></td>
 			</tr>
 			</thead>
 			<tbody>

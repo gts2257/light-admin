@@ -6,7 +6,9 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 
-<tiles:useAttribute name="lightAdminConfiguration" ignore="true"/>
+<tiles:importAttribute name="lightAdminConfiguration" ignore="true"/>
+
+<spring:message code="back.to.site" var="back_to_site"/>
 
 <div id="topNav">
     <div class="fixed">
@@ -14,14 +16,14 @@
             <div class="userNav" style="float:left;">
                 <ul>
                     <li>
-                        <a href="<c:out value='${lightAdminConfiguration.backToSiteUrl}'/>" title="Back to Site">
-                            <img src="<light:url value='/images/icons/topnav/mainWebsite.png'/>" alt=""><span>Back to Site</span>
+                        <a href="<c:out value='${lightAdminConfiguration.backToSiteUrl}'/>" title="${back_to_site}">
+                            <img src="<light:url value='/images/icons/topnav/mainWebsite.png'/>" alt=""><span>${back_to_site}</span>
                         </a>
                     </li>
                 </ul>
             </div>
 
-            <sec:authorize ifAllGranted="ROLE_ADMIN">
+            <sec:authorize access="isAuthenticated()">
                 <div class="welcome">
                     <a href="#" title="">
                         <img src="<light:url value='/images/userPic.png'/>" alt=""/></a>
@@ -46,7 +48,6 @@
 
             <c:if test="${lightAdminConfiguration.demoMode}">
                 <div class="userNav">
-                    <img id="support-ukraine" style="height: 20px;position: relative;top: 8px;left: 25px; cursor: pointer;" title="Support Ukraine" src="<light:url value='/images/ukraine-peace.png'/>">
                     <iframe allowtransparency="true" frameborder="0" scrolling="no"
                             src="https://platform.twitter.com/widgets/tweet_button.html?lang=en&url=http%3A%2F%2Flightadmin.org&related=lightadm_team&text=%23LightAdmin%20-%20Pluggable%20%23CRUD%20administration%20UI%20library%20for%20%23SpringBoot%20on%20top%20of%20%23SpringData,%20%23JPA%20and%20%23REST"
                             style="width:130px; height:20px; position: relative; right: -35px; top: 8px;"></iframe>

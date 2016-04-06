@@ -4,9 +4,9 @@
 <%@ taglib prefix="light" uri="http://www.lightadmin.org/tags" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 
-<tiles:useAttribute name="domainTypeAdministrationConfiguration"/>
+<tiles:importAttribute name="domainTypeAdministrationConfiguration"/>
 
-<light:url var="baseUrl" value="${light:baseUrl()}"/>
+<light:url var="baseUrl" value="/"/>
 <light:url var="restBaseUrl" value="${light:restBaseUrl()}"/>
 
 <script type="text/javascript">
@@ -18,7 +18,7 @@
             REST_BASE_URL: '${restBaseUrl}',
 
             getDomainEntityCollectionUrl: function(resourceName) {
-                return this.BASE_URL + '/' + resourceName;
+                return this.BASE_URL + 'domain/' + resourceName;
             },
             getDomainEntityCollectionRestUrl: function(resourceName) {
                 return this.REST_BASE_URL + '/' + resourceName;

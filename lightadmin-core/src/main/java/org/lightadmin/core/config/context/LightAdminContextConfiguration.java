@@ -43,14 +43,15 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
-import org.springframework.web.servlet.view.tiles2.SpringBeanPreparerFactory;
-import org.springframework.web.servlet.view.tiles2.TilesConfigurer;
-import org.springframework.web.servlet.view.tiles2.TilesViewResolver;
+import org.springframework.web.servlet.view.tiles3.SpringBeanPreparerFactory;
+import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
+import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
 import javax.servlet.ServletContext;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.lightadmin.core.util.LightAdminConfigurationUtils.LIGHT_ADMIN_CUSTOM_RESOURCE_CLASSPATH_LOCATION;
 import static org.springframework.web.servlet.DispatcherServlet.VIEW_RESOLVER_BEAN_NAME;
 
 @Configuration
@@ -68,7 +69,7 @@ public class LightAdminContextConfiguration extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/styles/**").addResourceLocations("classpath:/META-INF/resources/styles/");
         registry.addResourceHandler("/scripts/**").addResourceLocations("classpath:/META-INF/resources/scripts/");
-        registry.addResourceHandler("/images/**").addResourceLocations("classpath:/META-INF/resources/images/").setCachePeriod(31556926);
+        registry.addResourceHandler("/images/**").addResourceLocations("classpath:/META-INF/resources/images/", LIGHT_ADMIN_CUSTOM_RESOURCE_CLASSPATH_LOCATION + "/images/").setCachePeriod(31556926);
     }
 
     @Bean
@@ -160,14 +161,10 @@ public class LightAdminContextConfiguration extends WebMvcConfigurerAdapter {
         configurer.setTilesInitializer(lightAdminSpringTilesInitializer(definitions));
         configurer.setDefinitions(definitions);
         configurer.setPreparerFactoryClass(SpringBeanPreparerFactory.class);
-        configurer.setCheckRefresh(true);
         return configurer;
     }
 
     private LightAdminSpringTilesInitializer lightAdminSpringTilesInitializer(String[] definitions) {
-        final LightAdminSpringTilesInitializer lightAdminSpringTilesInitializer = new LightAdminSpringTilesInitializer();
-        lightAdminSpringTilesInitializer.setDefinitions(definitions);
-        lightAdminSpringTilesInitializer.setPreparerFactoryClass(SpringBeanPreparerFactory.class);
-        return lightAdminSpringTilesInitializer;
+        return new LightAdminSpringTilesInitializer(definitions);
     }
 }

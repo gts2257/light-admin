@@ -66,7 +66,7 @@ Declare maven dependency for using with Spring 4.0.X directly from Maven Central
 <dependency>
   <groupId>org.lightadmin</groupId>
   <artifactId>lightadmin</artifactId>
-  <version>1.0.1.RELEASE</version>
+  <version>1.2.0.RC1</version>
 </dependency> 
 ```
 
@@ -76,7 +76,7 @@ or
 <dependency>
   <groupId>org.lightadmin</groupId>
   <artifactId>lightadmin</artifactId>
-  <version>1.1.0.BUILD-SNAPSHOT</version>
+  <version>1.2.0.BUILD-SNAPSHOT</version>
 </dependency> 
 ```
 
@@ -239,7 +239,7 @@ By default, the app will run in 'embedded' mode which does not require any exter
 
 1. Navigate into demo application directory:
 
-		$ cd lightadmin-demo
+		$ cd lightadmin-sandbox
 
 2. Launch Tomcat from the command line:
 
@@ -247,7 +247,7 @@ By default, the app will run in 'embedded' mode which does not require any exter
 
 3. Access the deployed webapp at 
 
-		http://localhost:8080/lightadmin-demo
+		http://localhost:8080/lightadmin-sandbox
 
 ## LightAdmin integration example
 
